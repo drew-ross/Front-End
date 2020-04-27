@@ -11,7 +11,6 @@ const ValueForm = props => {
     }
 
     const addItem = e => {
-        props.data.append(newValue);
     }
 
 
