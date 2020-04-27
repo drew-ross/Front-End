@@ -11,7 +11,7 @@ import ValueList from "./components/ValueList";
 import Login from './components/Login'
 import { ValuesContext } from './contexts';
 
-const loginSchema = yup.object().shape({
+const formSchema = yup.object().shape({
   username: yup
     .string()
     .min(5, 'username must be at lest 5 characters long')
@@ -23,13 +23,13 @@ const loginSchema = yup.object().shape({
 })
 
 
-const initalLoginValues = {
+const initalFormValues = {
   username: '',
   password: '',
 }
 
 const initalFormErros = {
-  ...initalLoginValues
+  ...initalFormValues
 }
 
 function App() {
@@ -38,6 +38,7 @@ function App() {
 
   const [loginValues, setLoginValues] = useState(initalLoginValues)
   const [finalValues, setFinalValues] = useState(initalLoginValues)
+  const [formValues, setFormValues] = useState(initalFormValues)
   const [formErrors, setFormErrors] = useState(initalFormErros)
 
   const onChangeHandler = evt => {
@@ -45,7 +46,7 @@ function App() {
     const value = evt.target.value
 
     yup 
-      .reach(loginSchema, name)
+      .reach(formSchema, name)
       .validate(value)
       .then(valid => {
         setFormErrors({
@@ -60,25 +61,22 @@ function App() {
         })
       })
 
-    setLoginValues({
-      ...loginValues,
+    setFormValues({
+      ...formValues,
       [name]:value
     })
   }
 
   const onSubmitHandler = evt => {
     evt.preventDefault()
-    setFinalValues({
-      ...loginValues
-    })
-    console.log(finalValues)
+    console.log(formValues)
   }
 
   return (
     <Switch>
       <Route exact path='/'>
         <Login 
-          formValues={loginValues}
+          formValues={formValues}
           onChangeHandler={onChangeHandler}
           onSubmitHandler={onSubmitHandler}
           formErrors={formErrors}
