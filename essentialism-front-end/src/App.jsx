@@ -5,6 +5,7 @@ import {Switch, Route} from 'react-router-dom'
 
 // Styles 
 import './App.css';
+import ValueList from "./components/ValueList";
 
 // Components
 import Login from './components/Login'
