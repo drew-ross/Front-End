@@ -9,6 +9,7 @@ import ValueList from "./components/ValueList";
 
 // Components
 import Login from './components/Login'
+import { ValuesContext } from './contexts';
 
 const loginSchema = yup.object().shape({
   username: yup
@@ -32,6 +33,9 @@ const initalFormErros = {
 }
 
 function App() {
+
+  const [data, setData] = useState(["Athletic Ability", "Arts and Literature", "Creativity", "Independence", "Kindness and Generosity", "Music", "Living in the Moment", "Making a Difference", "Moral Principles", "Sense of Humor", "Nature and the Environment", "Career Success", "Membership in a Social Group", "Community", "Friends and Family"]);
+
   const [loginValues, setLoginValues] = useState(initalLoginValues)
   const [finalValues, setFinalValues] = useState(initalLoginValues)
   const [formErrors, setFormErrors] = useState(initalFormErros)
@@ -72,13 +76,18 @@ function App() {
 
   return (
     <Switch>
-      <Route path='/'>
+      <Route exact path='/'>
         <Login 
           formValues={loginValues}
           onChangeHandler={onChangeHandler}
           onSubmitHandler={onSubmitHandler}
           formErrors={formErrors}
         />
+      </Route>
+      <Route path='/valuelist'>
+        <ValuesContext.Provider value={{data, setData}}>
+        <ValueList />
+        </ValuesContext.Provider>
       </Route>
     </Switch>
   )

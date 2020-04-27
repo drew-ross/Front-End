@@ -1,17 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import ValueCard from "./ValueCard";
 import ValueForm from "./ValueForm";
+import { ValuesContext } from "../contexts/index";
 
 const ValueList = () => {
+    const {data, setData} = useContext(ValuesContext);
+    
 
-    const data = ["Athletic Ability", "Arts and Literature", "Creativity", "Independence", "Kindness and Generosity", "Music", "Living in the Moment", "Making a Difference", "Moral Principles", "Sense of Humor", "Nature and the Environment", "Career Success", "Membership in a Social Group", "Community", "Friends and Family"];
-        
 
     return (
         <div>
             <h1>Values</h1>
             {data.map(item => <ValueCard value={item}/>)}
-            <ValueForm data = {data}/>
+            <ValueForm data = {data} setData = {setData}/>
         </div>
     )
 }

@@ -11,19 +11,24 @@ const ValueForm = props => {
     }
 
     const addItem = e => {
+        e.preventDefault();
+        props.setData([...props.data, newValue]);
+        setNewValue("");
     }
 
 
     return (
         <div>
-         <label>
-             Add your own value: 
-              <input
-                type = "text"
-                value = {newValue}
-                onChange = {handleChange} />
-         </label>
-          <button onSubmit = {addItem}>Add</button>
+         <form onSubmit={addItem}>
+             <label>
+                 Add your own value: 
+                  <input
+                    type = "text"
+                    value = {newValue}
+                    onChange = {handleChange} />
+             </label>
+              <button>Add</button>
+         </form>
         </div>
     )
 }
