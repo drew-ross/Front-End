@@ -48,12 +48,8 @@ function App() {
   const [loginValues, setLoginValues] = useState(initalLoginValues)
   const [finalValues, setFinalValues] = useState(initalLoginValues)
   const [formValues, setFormValues] = useState(initalFormValues)
-<<<<<<< HEAD:src/App.jsx
-  const [formErrors, setFormErrors] = useState(initalFormErros)
-  const [user, setUser] = useState({})
-=======
   const [formErrors, setFormErrors] = useState(initalFormErrors)
->>>>>>> 9d76ac289b2447dff229c2eb86ba94a5c20885bc:essentialism-front-end/src/App.jsx
+  const [user, setUser] = useState({})
 
   const onChangeHandler = evt => {
     const name = evt.target.name
