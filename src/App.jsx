@@ -48,7 +48,7 @@ function App() {
   const [loginValues, setLoginValues] = useState(initalLoginValues)
   const [finalValues, setFinalValues] = useState(initalLoginValues)
   const [formValues, setFormValues] = useState(initalFormValues)
-  const [formErrors, setFormErrors] = useState(initalFormErros)
+  const [formErrors, setFormErrors] = useState(initalFormErrors)
   const [user, setUser] = useState({})
 
   const onChangeHandler = evt => {
