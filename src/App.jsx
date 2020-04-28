@@ -44,9 +44,6 @@ function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
 
-
-  const [loginValues, setLoginValues] = useState(initalLoginValues)
-  const [finalValues, setFinalValues] = useState(initalLoginValues)
   const [formValues, setFormValues] = useState(initalFormValues)
   const [formErrors, setFormErrors] = useState(initalFormErrors)
   const [user, setUser] = useState({})
@@ -106,7 +103,6 @@ function App() {
         />
       </Route>
       <Route path='/valuelist'>
-       
         <ValueList values = {state.values} dispatch = {dispatch} />
       </Route>
 
