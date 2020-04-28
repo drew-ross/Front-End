@@ -1,20 +1,21 @@
 // Libraries
-import React, {useState} from 'react';
+import React, {useState, useReducer} from 'react';
 import * as yup from 'yup'
 import {Switch, Route} from 'react-router-dom'
 
 // Styles 
 import './App.css';
-import ValueList from "./components/ValueList";
 
 // Components
 import Login from './components/Login'
-import { ValuesContext } from './contexts';
+import ValueList from "./components/ValueList";
+import { initialState, reducer } from './reducers/reducer';
+import SelectedValues from './components/SelectedValues';
 
 const formSchema = yup.object().shape({
   username: yup
     .string()
-    .min(5, 'username must be at lest 5 characters long')
+    .min(5, 'username must be at least 5 characters long')
     .required('a valid username is required'),
   password: yup
     .string()
@@ -27,19 +28,24 @@ const initalFormValues = {
   username: '',
   password: '',
 }
-
-const initalFormErros = {
+const initalLoginValues = {
+  username: '',
+  password: '',
+}
+const initalFormErrors = {
   ...initalFormValues
 }
 
 function App() {
 
-  const [data, setData] = useState(["Athletic Ability", "Arts and Literature", "Creativity", "Independence", "Kindness and Generosity", "Music", "Living in the Moment", "Making a Difference", "Moral Principles", "Sense of Humor", "Nature and the Environment", "Career Success", "Membership in a Social Group", "Community", "Friends and Family"]);
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+
 
   const [loginValues, setLoginValues] = useState(initalLoginValues)
   const [finalValues, setFinalValues] = useState(initalLoginValues)
   const [formValues, setFormValues] = useState(initalFormValues)
-  const [formErrors, setFormErrors] = useState(initalFormErros)
+  const [formErrors, setFormErrors] = useState(initalFormErrors)
 
   const onChangeHandler = evt => {
     const name = evt.target.name
@@ -83,9 +89,13 @@ function App() {
         />
       </Route>
       <Route path='/valuelist'>
-        <ValuesContext.Provider value={{data, setData}}>
-        <ValueList />
-        </ValuesContext.Provider>
+       
+        <ValueList values = {state.values} dispatch = {dispatch} />
+      </Route>
+
+      <Route path='/selectedvalues'>
+       
+        <SelectedValues values = {state.values} dispatch = {dispatch} />
       </Route>
     </Switch>
   )

@@ -7,15 +7,14 @@ import Typography from '@material-ui/core/Typography';
 const ValueCard = props => {
 
 
-    const itemSelected = e => {
-        props.dispatch({type: "SELECT_VALUE", payload: props.value })
+    const finalSelect = e => {
+        props.dispatch({type: "FINAL_SELECT", payload: props.value })
         
-
     }
 
     return (
-        <div id="card">
-             {props.value.selected ? <Card  onClick = {itemSelected} 
+        <div id="selectCard">
+           {props.value.final ? <Card  onClick = {finalSelect} 
             id="toggleOn"
             >
       <CardActionArea>
@@ -33,7 +32,7 @@ const ValueCard = props => {
       : 
 
 
-      <Card  onClick = {itemSelected} 
+      <Card  onClick = {finalSelect} 
       id="toggleOff"
       >
 <CardActionArea>
