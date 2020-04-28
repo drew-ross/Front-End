@@ -48,7 +48,9 @@ const ValueForm = props => {
       type = "text"
       value = {newValue}
       onChange = {handleChange}/>
-      {newValue &&  <Button  id = "button" type ="submit" variant="contained" >
+      {newValue ?  <Button color="primary" id = "button" type ="submit" variant="contained" >
+      Add
+    </Button> : <Button disabled color="primary" id = "button" type ="submit" variant="contained" >
       Add
     </Button> }
       

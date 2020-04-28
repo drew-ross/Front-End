@@ -40,7 +40,7 @@ const ValueList = (props) => {
 
 
         </div>
-        <Button id = "nextButton"  variant="contained" onClick = {nextPage} >
+        <Button id = "nextButton" color="primary" variant="contained" onClick = {nextPage} >
       Next
     </Button>
             
