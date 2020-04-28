@@ -1,22 +1,6 @@
 import React, { useState } from "react";
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    '& > *': {
-      margin: theme.spacing(1),
-      width: '25ch',
-    },
-    
-  },
-
-}));
 
 const ValueForm = props => {
-    const classes = useStyles();
 
     const [newValue, setNewValue] = useState("");
 
@@ -27,12 +11,7 @@ const ValueForm = props => {
     }
 
     const addItem = e => {
-        e.preventDefault();
-        props.dispatch({type: 'ADD_VALUE', payload: newValue});
-        setNewValue("");
     }
-
-   
 
 
     return (

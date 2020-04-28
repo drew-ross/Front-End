@@ -1,7 +1,7 @@
 // Libraries
 import React, {useState, useReducer} from 'react';
 import * as yup from 'yup'
-import {Switch, Route} from 'react-router-dom'
+import {Switch, Route, useHistory} from 'react-router-dom'
 import axios from 'axios'
 
 // Styles 
@@ -12,41 +12,39 @@ import Login from './components/Login'
 import ValueList from "./components/ValueList";
 import { initialState, reducer } from './reducers/reducer';
 import SelectedValues from './components/SelectedValues';
+import Dashboard from './components/Dashboard'
+// import DashboardCard from './components/DashboardCard';
 
 const formSchema = yup.object().shape({
   username: yup
     .string()
-    .min(5, 'username must be at least 5 characters long')
+    .min(3, 'username must be at least 5 characters long')
     .required('a valid username is required'),
   password: yup
     .string()
-    .min(6, 'password must be at least 6 characters in length')
+    .min(5, 'password must be at least 6 characters in length')
     .required('a valid password is required')
 })
 
-const url = ''
-
+const baseUrl = 'https://essentialism-bwt.herokuapp.com/api/auth/'
 
 const initalFormValues = {
   username: '',
   password: '',
 }
-const initalLoginValues = {
-  username: '',
-  password: '',
-}
+
 const initalFormErrors = {
   ...initalFormValues
 }
 
 function App() {
-
   const [state, dispatch] = useReducer(reducer, initialState);
-
 
   const [formValues, setFormValues] = useState(initalFormValues)
   const [formErrors, setFormErrors] = useState(initalFormErrors)
   const [user, setUser] = useState({})
+
+  const history = useHistory()
 
   const onChangeHandler = evt => {
     const name = evt.target.name
@@ -74,41 +72,58 @@ function App() {
     })
   }
 
-  const postUser = user => {
+  const handleUser = (user, url, endpoint) => {
+    console.log(user)
     axios.post(url, user)
     .then(res => {
-        setUser(res.data)
+        console.log(res)
+        console.log(endpoint)
+        setUser(res) // user.data.token for token!!
+        if(endpoint === 'register'){
+          history.push('/valuelist')
+        }
+        // if the user is coming from the log in page
+        else {
+          history.push('/dashboard') // TEMPORARY WAITING FOR ANDREW!!!! ----- Will route to dashboard
+        }
     })
     .catch(err => {
-      debugger
+      // debugger
     })
   }
 
-  // const signUpHandler = evt => {
-  //   evt.preventDefault()
+  const onSubmitHandler = evt => {
+    const endpoint = evt.target.name
+    evt.preventDefault()
 
-  //   const newUser =  
-  //   console.log(formValues)
-  // }
+    const postPayload = {
+      username: formValues.username,
+      password: formValues.password
+    }
+
+    handleUser(postPayload, `${baseUrl}${endpoint}`, endpoint)
+  }
 
   return (
     <Switch>
-      <Route exact path='/'>
-        <Login 
-          formValues={formValues}
-          onChangeHandler={onChangeHandler}
-          // onSubmitHandler={onSubmitHandler}
-          signU
-          formErrors={formErrors}
-        />
-      </Route>
       <Route path='/valuelist'>
         <ValueList values = {state.values} dispatch = {dispatch} />
       </Route>
-
       <Route path='/selectedvalues'>
-       
         <SelectedValues values = {state.values} dispatch = {dispatch} />
+      </Route>
+
+      <Route path='/dashboard'>
+        <Dashboard />
+      </Route>
+
+      <Route path='/'>
+        <Login 
+          formValues={formValues}
+          onChangeHandler={onChangeHandler}
+          onSubmitHandler={onSubmitHandler}
+          formErrors={formErrors}
+        />
       </Route>
     </Switch>
   )
