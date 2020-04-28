@@ -12,6 +12,8 @@ import Login from './components/Login'
 import ValueList from "./components/ValueList";
 import { initialState, reducer } from './reducers/reducer';
 import SelectedValues from './components/SelectedValues';
+import Dashboard from './components/Dashboard'
+// import DashboardCard from './components/DashboardCard';
 
 const formSchema = yup.object().shape({
   username: yup
@@ -110,6 +112,11 @@ function App() {
        
         <SelectedValues values = {state.values} dispatch = {dispatch} />
       </Route>
+
+      <Route path='/dashboard'>
+      <Dashboard />
+      </Route>
+
     </Switch>
   )
 }
