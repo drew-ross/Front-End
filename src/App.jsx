@@ -1,20 +1,22 @@
 // Libraries
-import React, {useState} from 'react';
+import React, {useState, useReducer} from 'react';
 import * as yup from 'yup'
 import {Switch, Route} from 'react-router-dom'
 import axios from 'axios'
 
 // Styles 
 import './App.css';
-import ValueList from "./components/ValueList";
 
 // Components
 import Login from './components/Login'
+import ValueList from "./components/ValueList";
+import { initialState, reducer } from './reducers/reducer';
+import SelectedValues from './components/SelectedValues';
 
 const formSchema = yup.object().shape({
   username: yup
     .string()
-    .min(5, 'username must be at lest 5 characters long')
+    .min(5, 'username must be at least 5 characters long')
     .required('a valid username is required'),
   password: yup
     .string()
@@ -29,15 +31,29 @@ const initalFormValues = {
   username: '',
   password: '',
 }
-
-const initalFormErros = {
+const initalLoginValues = {
+  username: '',
+  password: '',
+}
+const initalFormErrors = {
   ...initalFormValues
 }
 
 function App() {
+
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+
+
+  const [loginValues, setLoginValues] = useState(initalLoginValues)
+  const [finalValues, setFinalValues] = useState(initalLoginValues)
   const [formValues, setFormValues] = useState(initalFormValues)
+<<<<<<< HEAD:src/App.jsx
   const [formErrors, setFormErrors] = useState(initalFormErros)
   const [user, setUser] = useState({})
+=======
+  const [formErrors, setFormErrors] = useState(initalFormErrors)
+>>>>>>> 9d76ac289b2447dff229c2eb86ba94a5c20885bc:essentialism-front-end/src/App.jsx
 
   const onChangeHandler = evt => {
     const name = evt.target.name
@@ -84,7 +100,7 @@ function App() {
 
   return (
     <Switch>
-      <Route path='/'>
+      <Route exact path='/'>
         <Login 
           formValues={formValues}
           onChangeHandler={onChangeHandler}
@@ -92,6 +108,15 @@ function App() {
           signU
           formErrors={formErrors}
         />
+      </Route>
+      <Route path='/valuelist'>
+       
+        <ValueList values = {state.values} dispatch = {dispatch} />
+      </Route>
+
+      <Route path='/selectedvalues'>
+       
+        <SelectedValues values = {state.values} dispatch = {dispatch} />
       </Route>
     </Switch>
   )
