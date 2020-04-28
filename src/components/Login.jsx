@@ -8,7 +8,7 @@ const LoginForm = props => {
         onSubmitHandler
     } = props
     return (
-        <form onSubmit={onSubmitHandler}>
+        <form onSubmit={onSubmitHandler} name='login'>
             <label htmlFor='username'>
                 username: 
                 <input
@@ -39,7 +39,7 @@ const SignUpForm = props => {
         onSubmitHandler
     } = props
     return (
-        <form onSubmit={onSubmitHandler}>
+        <form onSubmit={onSubmitHandler} name='register'>
             <label htmlFor='username'>
                 username: 
                 <input

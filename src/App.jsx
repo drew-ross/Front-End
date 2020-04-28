@@ -2,7 +2,7 @@
 import React, {useState, useReducer} from 'react';
 import * as yup from 'yup'
 import {Switch, Route} from 'react-router-dom'
-// import axios from 'axios'
+import axios from 'axios'
 
 // Styles 
 import './App.css';
@@ -16,16 +16,15 @@ import SelectedValues from './components/SelectedValues';
 const formSchema = yup.object().shape({
   username: yup
     .string()
-    .min(5, 'username must be at least 5 characters long')
+    .min(3, 'username must be at least 5 characters long')
     .required('a valid username is required'),
   password: yup
     .string()
-    .min(6, 'password must be at least 6 characters in length')
+    .min(5, 'password must be at least 6 characters in length')
     .required('a valid password is required')
 })
 
-// const url = ''
-
+const baseUrl = 'https://essentialism-bwt.herokuapp.com/api/auth/' // login or register
 
 const initalFormValues = {
   username: '',
@@ -40,7 +39,7 @@ function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [formValues, setFormValues] = useState(initalFormValues)
   const [formErrors, setFormErrors] = useState(initalFormErrors)
-  // const [user, setUser] = useState({})
+  const [user, setUser] = useState({})
 
   const onChangeHandler = evt => {
     const name = evt.target.name
@@ -68,19 +67,29 @@ function App() {
     })
   }
 
-  // const postUser = user => {
-  //   axios.post(url, user)
-  //   .then(res => {
-  //       setUser(res.data)
-  //   })
-  //   .catch(err => {
-  //     debugger
-  //   })
-  // }
+  const postUser = (user, url) => {
+    console.log(user)
+    axios.post(url, user)
+    .then(res => {
+        console.log(res)
+        setUser(res)
+    })
+    .catch(err => {
+      // debugger
+    })
+  }
 
   const onSubmitHandler = evt => {
+    const endpoint = evt.target.name
     evt.preventDefault()
-    console.log(formValues)
+
+    const postPayload = {
+      username: formValues.username,
+      password: formValues.password
+    }
+
+    postUser(postPayload, `${baseUrl}${endpoint}`)
+    console.log(user)
   }
 
   return (
