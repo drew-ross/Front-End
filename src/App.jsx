@@ -1,7 +1,7 @@
 // Libraries
 import React, {useState, useReducer} from 'react';
 import * as yup from 'yup'
-import {Switch, Route} from 'react-router-dom'
+import {Switch, Route, useHistory} from 'react-router-dom'
 import axios from 'axios'
 
 // Styles 
@@ -24,7 +24,7 @@ const formSchema = yup.object().shape({
     .required('a valid password is required')
 })
 
-const baseUrl = 'https://essentialism-bwt.herokuapp.com/api/auth/' // login or register
+const baseUrl = 'https://essentialism-bwt.herokuapp.com/api/auth/'
 
 const initalFormValues = {
   username: '',
@@ -40,6 +40,8 @@ function App() {
   const [formValues, setFormValues] = useState(initalFormValues)
   const [formErrors, setFormErrors] = useState(initalFormErrors)
   const [user, setUser] = useState({})
+
+  const history = useHistory()
 
   const onChangeHandler = evt => {
     const name = evt.target.name
@@ -67,12 +69,20 @@ function App() {
     })
   }
 
-  const postUser = (user, url) => {
+  const handleUser = (user, url, endpoint) => {
     console.log(user)
     axios.post(url, user)
     .then(res => {
         console.log(res)
-        setUser(res)
+        console.log(endpoint)
+        setUser(res) // user.data.token for token!!
+        if(endpoint === 'register'){
+          history.push('/valuelist')
+        }
+        // if the user is coming from the log in page
+        else {
+          history.push('/dashboard') // TEMPORARY WAITING FOR ANDREW!!!! ----- Will route to dashboard
+        }
     })
     .catch(err => {
       // debugger
@@ -88,20 +98,20 @@ function App() {
       password: formValues.password
     }
 
-    postUser(postPayload, `${baseUrl}${endpoint}`)
-    console.log(user)
+    handleUser(postPayload, `${baseUrl}${endpoint}`, endpoint)
   }
 
   return (
     <Switch>
       <Route path='/valuelist'>
-       
         <ValueList values = {state.values} dispatch = {dispatch} />
       </Route>
-
       <Route path='/selectedvalues'>
-       
         <SelectedValues values = {state.values} dispatch = {dispatch} />
+      </Route>
+      <Route path='/dashboard'>
+        <h1>TEMPORARY DASHBOARD</h1>
+        <button onClick={evt => history.push('/')}>GO HOME</button>
       </Route>
       <Route path='/'>
         <Login 
