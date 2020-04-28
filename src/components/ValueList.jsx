@@ -8,10 +8,20 @@ const ValueList = () => {
         
 
     return (
-        <div>
-            <h1>Values</h1>
-            {data.map(item => <ValueCard value={item}/>)}
-            <ValueForm data = {data}/>
+        <div id="valueCont">
+            <h1>Which values resonate with you?</h1>
+            <ValueForm values={props.values} dispatch={props.dispatch}/>
+            <div  id="valueGrid">
+           
+            {props.values.map(item => <ValueCard value={item} key = {item.id} dispatch = {props.dispatch} />)}
+
+
+        </div>
+        <Button id = "nextButton" color="primary" variant="contained" onClick = {nextPage} >
+      Next
+    </Button>
+            
+           
         </div>
     )
 }

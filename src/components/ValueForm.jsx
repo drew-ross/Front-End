@@ -16,14 +16,25 @@ const ValueForm = props => {
 
     return (
         <div>
-         <label>
-             Add your own value: 
-              <input
-                type = "text"
-                value = {newValue}
-                onChange = {handleChange} />
-         </label>
-          <button onSubmit = {addItem}>Add</button>
+         
+
+         <form  onSubmit={addItem} className={classes.root} noValidate autoComplete="off">
+  
+  <div id="valueForm">
+      <TextField   
+
+       className ={classes.input}id="outlined-basic" label="Add your own value" variant="outlined" 
+      type = "text"
+      value = {newValue}
+      onChange = {handleChange}/>
+      {newValue ?  <Button color="primary" id = "button" type ="submit" variant="contained" >
+      Add
+    </Button> : <Button disabled color="primary" id = "button" type ="submit" variant="contained" >
+      Add
+    </Button> }
+      
+  </div>
+</form>
         </div>
     )
 }
