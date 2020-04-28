@@ -1,19 +1,22 @@
 // Libraries
-import React, {useState} from 'react';
+import React, {useState, useReducer} from 'react';
 import * as yup from 'yup'
 import {Switch, Route} from 'react-router-dom'
+import axios from 'axios'
 
 // Styles 
 import './App.css';
-import ValueList from "./components/ValueList";
 
 // Components
 import Login from './components/Login'
+import ValueList from "./components/ValueList";
+import { initialState, reducer } from './reducers/reducer';
+import SelectedValues from './components/SelectedValues';
 
 const formSchema = yup.object().shape({
   username: yup
     .string()
-    .min(5, 'username must be at lest 5 characters long')
+    .min(5, 'username must be at least 5 characters long')
     .required('a valid username is required'),
   password: yup
     .string()
@@ -21,19 +24,22 @@ const formSchema = yup.object().shape({
     .required('a valid password is required')
 })
 
+const url = ''
+
 
 const initalFormValues = {
   username: '',
   password: '',
 }
 
-const initalFormErros = {
+const initalFormErrors = {
   ...initalFormValues
 }
 
 function App() {
   const [formValues, setFormValues] = useState(initalFormValues)
-  const [formErrors, setFormErrors] = useState(initalFormErros)
+  const [formErrors, setFormErrors] = useState(initalFormErrors)
+  const [user, setUser] = useState({})
 
   const onChangeHandler = evt => {
     const name = evt.target.name
@@ -61,20 +67,42 @@ function App() {
     })
   }
 
-  const onSubmitHandler = evt => {
-    evt.preventDefault()
-    console.log(formValues)
+  const postUser = user => {
+    axios.post(url, user)
+    .then(res => {
+        setUser(res.data)
+    })
+    .catch(err => {
+      debugger
+    })
   }
+
+  // const signUpHandler = evt => {
+  //   evt.preventDefault()
+
+  //   const newUser =  
+  //   console.log(formValues)
+  // }
 
   return (
     <Switch>
-      <Route path='/'>
+      <Route exact path='/'>
         <Login 
           formValues={formValues}
           onChangeHandler={onChangeHandler}
-          onSubmitHandler={onSubmitHandler}
+          // onSubmitHandler={onSubmitHandler}
+          signU
           formErrors={formErrors}
         />
+      </Route>
+      <Route path='/valuelist'>
+       
+        <ValueList values = {state.values} dispatch = {dispatch} />
+      </Route>
+
+      <Route path='/selectedvalues'>
+       
+        <SelectedValues values = {state.values} dispatch = {dispatch} />
       </Route>
     </Switch>
   )
