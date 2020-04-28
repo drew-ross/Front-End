@@ -1,50 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import ValueCard from "./ValueCard";
 import ValueForm from "./ValueForm";
-import Button from '@material-ui/core/Button';
-import { useHistory } from 'react-router-dom';
 
+const ValueList = () => {
 
-
-const ValueList = (props) => {
-
-    const { push } = useHistory();
-
-    console.log(props.values);
-
-
-    const nextPage =  e => {
-        e.preventDefault();
-        const temp = props.values.filter(value => value.selected === true);
+    const data = ["Athletic Ability", "Arts and Literature", "Creativity", "Independence", "Kindness and Generosity", "Music", "Living in the Moment", "Making a Difference", "Moral Principles", "Sense of Humor", "Nature and the Environment", "Career Success", "Membership in a Social Group", "Community", "Friends and Family"];
         
-        if (temp.length < 3) {
-            alert("Pick at least three values!")
-        }
-        else {
-            push('/selectedvalues');
-        }
-
-    }
-
-
-
-   
 
     return (
-        <div id="valueCont">
-            <h1>Which values resonate with you?</h1>
-            <ValueForm values={props.values} dispatch={props.dispatch}/>
-            <div  id="valueGrid">
-           
-            {props.values.map(item => <ValueCard value={item} key = {item.id} dispatch = {props.dispatch} />)}
-
-
-        </div>
-        <Button id = "nextButton"  variant="contained" onClick = {nextPage} >
-      Next
-    </Button>
-            
-           
+        <div>
+            <h1>Values</h1>
+            {data.map(item => <ValueCard value={item}/>)}
+            <ValueForm data = {data}/>
         </div>
     )
 }
