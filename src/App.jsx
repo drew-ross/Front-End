@@ -2,6 +2,7 @@
 import React, {useState} from 'react';
 import * as yup from 'yup'
 import {Switch, Route} from 'react-router-dom'
+import axios from 'axios'
 
 // Styles 
 import './App.css';
@@ -21,6 +22,8 @@ const formSchema = yup.object().shape({
     .required('a valid password is required')
 })
 
+const url = ''
+
 
 const initalFormValues = {
   username: '',
@@ -34,6 +37,7 @@ const initalFormErros = {
 function App() {
   const [formValues, setFormValues] = useState(initalFormValues)
   const [formErrors, setFormErrors] = useState(initalFormErros)
+  const [user, setUser] = useState({})
 
   const onChangeHandler = evt => {
     const name = evt.target.name
@@ -61,10 +65,22 @@ function App() {
     })
   }
 
-  const onSubmitHandler = evt => {
-    evt.preventDefault()
-    console.log(formValues)
+  const postUser = user => {
+    axios.post(url, user)
+    .then(res => {
+        setUser(res.data)
+    })
+    .catch(err => {
+      debugger
+    })
   }
+
+  // const signUpHandler = evt => {
+  //   evt.preventDefault()
+
+  //   const newUser =  
+  //   console.log(formValues)
+  // }
 
   return (
     <Switch>
@@ -72,7 +88,8 @@ function App() {
         <Login 
           formValues={formValues}
           onChangeHandler={onChangeHandler}
-          onSubmitHandler={onSubmitHandler}
+          // onSubmitHandler={onSubmitHandler}
+          signU
           formErrors={formErrors}
         />
       </Route>
