@@ -1,17 +1,19 @@
-import React,{ Component, createContext } from 'react';
+import React,{ Component, useContext } from 'react';
 import DashboardCard from './DashboardCard';
 import { connect } from 'react-redux';
+import {ValuesContext} from "../contexts/index";
 
 
-export const DashContext = createContext();
 
-class Dashboard extends Component {
-    state = {
-        
-    }
-    render(){
+
+const Dashboard = props => {
+    console.log("value", props.values);
+
+    const {selected} = useContext(ValuesContext);
+    console.log("selected", selected);
+
+
     return (
-        <DashContext.Provider>
         <div className='container-fluid d-flex justify-content-center'>
             <div className='row'>
                 <div className='col-md-4'>
@@ -25,10 +27,10 @@ class Dashboard extends Component {
                 </div>
             </div>
         </div>
-        </DashContext.Provider>
-    );
-  }
+    )
 }
+
+
 
 const mapStateToProps = state => {
     console.log(state);
