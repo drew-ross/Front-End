@@ -10,14 +10,11 @@ import './App.css';
 // Components
 import Login from './components/Login'
 import ValueList from "./components/ValueList";
-import { initialState, reducer } from './reducers/reducer';
-import SelectedValues from './components/SelectedValues';
 import Dashboard from './components/Dashboard';
 import SingleCard from './components/SingleCard';
-import Dashboard from './components/Dashboard'
 import PrivateRoute from '../src/utils/PrivateRoute';
 import ButtonAppBar from '../src/components/Nav';
-// import DashboardCard from './components/DashboardCard';
+
 
 const formSchema = yup.object().shape({
   username: yup
@@ -119,13 +116,9 @@ function App() {
   }
 
   return (
+    <>
+    <ButtonAppBar />
     <Switch>
-      <Route path='/valuelist'>
-        <ValueList values = {state.values} dispatch = {dispatch} />
-      </Route>
-      <Route path='/selectedvalues'>
-        <SelectedValues values = {state.values} dispatch = {dispatch} />
-      </Route>
 
       <Route path='/dashboard'>
         <Dashboard />
@@ -135,18 +128,8 @@ function App() {
         <SingleCard />
       </Route>
 
-      <Route path='/'>
-        <Login 
-          formValues={formValues}
-          onChangeHandler={onChangeHandler}
-          onSubmitHandler={onSubmitHandler}
-          formErrors={formErrors}
-        />
-      </Route>
-    </Switch>
-    <div>
-      <ButtonAppBar />
-      <Switch>
+      
+      
         <PrivateRoute path='/valuelist'>
           <ValueList/>
         </PrivateRoute>
@@ -165,7 +148,7 @@ function App() {
           />
         </Route>
       </Switch>
-    </div>
+     </>
   );
 }
 
