@@ -12,7 +12,8 @@ import Login from './components/Login'
 import ValueList from "./components/ValueList";
 import { initialState, reducer } from './reducers/reducer';
 import SelectedValues from './components/SelectedValues';
-import Dashboard from './components/Dashboard'
+import Dashboard from './components/Dashboard';
+import SingleCard from './components/SingleCard';
 // import DashboardCard from './components/DashboardCard';
 
 const formSchema = yup.object().shape({
@@ -115,6 +116,10 @@ function App() {
 
       <Route path='/dashboard'>
         <Dashboard />
+      </Route>
+
+      <Route path='/singlecard'>
+        <SingleCard />
       </Route>
 
       <Route path='/'>
