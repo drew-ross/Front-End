@@ -1,8 +1,11 @@
-import React, {Component} from 'react';
+import React, {Component, useContext, useEffect} from 'react';
 // import reactDOM from 'react-dom';
 import './DashboardStyle.css';
 import EssentialCard from './EssentialCard';
+import {DashContext} from "../contexts";
 // import DashboardCard from './DashboardCard'
+import {axiosWithAuth} from "../utils/axiosAuth";
+
 
 class SingleCard extends Component {
 constructor(props){
@@ -14,7 +17,13 @@ constructor(props){
     this.addItem = this.addItem.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
 
+    const {projects} = useContext(DashContext);
+
 }
+
+
+
+
 
 addItem(e) {
     if (this.inputElement.value !== '') {
@@ -22,6 +31,14 @@ addItem(e) {
             text: this.inputElement.value,
             key: Date.now()
         };
+
+        axiosWithAuth()
+        .post("https://essentialism-bwt.herokuapp.com/api/projects", newItem)
+        .then(res => {
+            console.log(res);
+        })
+
+          
        this.setState((prevState) => {
            return {
                items: prevState.items.concat(newItem)

@@ -3,6 +3,7 @@ import React, {useState, useEffect} from 'react';
 import * as yup from 'yup'
 import {Switch, Route, useHistory} from 'react-router-dom'
 import axios from 'axios'
+import {axiosWithAuth} from "../src/utils/axiosAuth";
 
 // Styles 
 import './App.css';
@@ -14,6 +15,7 @@ import Dashboard from './components/Dashboard';
 import SingleCard from './components/SingleCard';
 import PrivateRoute from '../src/utils/PrivateRoute';
 import ButtonAppBar from '../src/components/Nav';
+import {ValuesContext, DashContext} from "../src/contexts";
 
 
 const formSchema = yup.object().shape({
@@ -60,10 +62,7 @@ function App() {
     
 }
 
-useEffect(() => {
-    console.log(selected);
 
-});
 
   const onChangeHandler = evt => {
     const name = evt.target.name
@@ -131,8 +130,55 @@ useEffect(() => {
     setFormValues(initalFormValues)
   }
 
+  const [initialState, setInitialState] = useState({
+    values: [
+    ],
+    
+})
+
+
+const fetchingData = () => {
+  
+  //   axiosWithAuth()
+  //   .get("https://essentialism-bwt.herokuapp.com/api/values")
+  //   .then(res => {
+  //       console.log("res",res);
+  // setInitialState(
+  //  { ...initialState,
+  //     values: [
+  //     res.data
+  //   ]
+  // }
+  // )
+  
+ 
+      
+      
+  // })
+  // .catch(err => {
+  //     console.log("err", err);
+  // })
+  
+
+}
+
+
+
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    axiosWithAuth()
+    .get("https://essentialism-bwt.herokuapp.com/api/projects")
+    .then(res => {
+        setProjects(res.data);
+    })
+  })
+
+
+
   return (
     <>
+    <ValuesContext.Provider value = {{selected, fetchingData, initialState}}>
     <ButtonAppBar />
     <Switch>
 
@@ -140,20 +186,25 @@ useEffect(() => {
         <Dashboard />
       </Route>
 
-      <Route path='/singlecard'>
-        <SingleCard />
-      </Route>
+     
 
       
       
         <PrivateRoute path='/valuelist'>
-          <ValueList selectItemList = {selectItemList} />
+          <ValueList selectItemList = {selectItemList}  />
         </PrivateRoute>
        
-  
+        <DashContext.Provider value={{projects}}>
+
         <PrivateRoute path='/dashboard'>
-          <Dashboard selected={selected}/>
+          <Dashboard />
         </PrivateRoute>
+
+        <Route path='/singlecard'>
+        <SingleCard />
+      </Route>
+
+        </DashContext.Provider>
   
         <Route path='/'>
           <Login 
@@ -164,6 +215,7 @@ useEffect(() => {
           />
         </Route>
       </Switch>
+      </ValuesContext.Provider>
      </>
   );
 }
