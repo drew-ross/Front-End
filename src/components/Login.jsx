@@ -1,67 +1,7 @@
 import React from 'react'
 import {Route, Switch, useHistory} from 'react-router-dom'
-
-const LoginForm = props => {
-    const {
-        formValues,
-        onChangeHandler,
-        onSubmitHandler
-    } = props
-    return (
-        <form onSubmit={onSubmitHandler} name='login'>
-            <label htmlFor='username'>
-                username: 
-                <input
-                    name='username'
-                    type='text'
-                    value={formValues.username}
-                    onChange={onChangeHandler}
-                />
-            </label>
-            <label>
-                password:
-                <input
-                    name='password'
-                    type='password'
-                    value={formValues.password}
-                    onChange={onChangeHandler}
-                />
-            </label>
-            <button type='submit'>Login!</button>
-        </form>
-    )
-}
-
-const SignUpForm = props => {
-    const {
-        formValues,
-        onChangeHandler,
-        onSubmitHandler
-    } = props
-    return (
-        <form onSubmit={onSubmitHandler} name='register'>
-            <label htmlFor='username'>
-                username: 
-                <input
-                    name='username'
-                    type='text'
-                    value={formValues.username}
-                    onChange={onChangeHandler}
-                />
-            </label>
-            <label>
-                password:
-                <input
-                    name='password'
-                    type='password'
-                    value={formValues.password}
-                    onChange={onChangeHandler}
-                />
-            </label>
-            <button type='submit'>Sign Up!</button>
-        </form>
-    )
-}
+import LoginForm from './LoginForm'
+import SignUpForm from './SignUpForm'
 
 const LoginOrSignUp = () => {
 
@@ -71,7 +11,6 @@ const LoginOrSignUp = () => {
         const name = evt.target.name
         history.push(`/${name}`)
     }
-
     return (
         <div>
             <button 
@@ -80,7 +19,7 @@ const LoginOrSignUp = () => {
                 >Login</button>
             <button 
                 onClick={newRoute}
-                name='sign-up'
+                name='register'
                 >Sign Up</button>
         </div>
     )
@@ -102,7 +41,7 @@ const Login = props => {
                     onSubmitHandler={onSubmitHandler}
                 />
             </Route>
-            <Route path='/sign-up'>
+            <Route path='/register'>
                 <SignUpForm
                     formValues={formValues}
                     onChangeHandler={onChangeHandler}
