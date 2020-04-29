@@ -63,6 +63,8 @@ const SignUpForm = props => {
     )
 }
 
+//if you want you could move this stuff to the material UI nav bar ?
+
 const LoginOrSignUp = () => {
 
     const history = useHistory()

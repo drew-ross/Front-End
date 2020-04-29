@@ -28,7 +28,9 @@ const ValueForm = props => {
 
     const addItem = e => {
       e.preventDefault();
-      props.dispatch({type: 'ADD_VALUE', payload: newValue});
+
+      // POST ENDPOINT NEEDED FOR VALUES 
+      
       setNewValue("");
     }
 

@@ -1,53 +1,22 @@
 import React, { useState } from "react";
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
+
 
 const ValueCard = props => {
 
-
-    const itemSelected = e => {
-        props.dispatch({type: "SELECT_VALUE", payload: props.value })
-
-
-    }
+const select = () => {
+    props.selectItem(props.value.id);
+}
 
     return (
-        <div id="card">
-             {props.value.selected ? <Card  onClick = {itemSelected} 
-            id="toggleOn"
-            >
-      <CardActionArea>
+        
 
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            {props.value.value}
+<div className="value-card card text-center">
 
-          </Typography>
-
-        </CardContent>
-      </CardActionArea>
-      </Card> 
-
-      : 
-
-
-      <Card  onClick = {itemSelected} 
-      id="toggleOff"
-      >
-<CardActionArea>
-
-  <CardContent>
-    <Typography gutterBottom variant="h5" component="h2">
-      {props.value.value}
-
-    </Typography>
-
-  </CardContent>
-</CardActionArea>
-</Card>}
-
+<div className='card-body value-card'>
+    <h3 className='card-title'> {props.value.value}</h3>
+   
+    <a href='#' onClick ={select}className='btn btn-outline-success'>Select</a>
+</div>
 </div>
     )
 }
