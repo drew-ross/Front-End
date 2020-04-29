@@ -29,10 +29,10 @@ const ValueList = (props) => {
 
         </div>
         <div id =  "backButton">
-            <Button id = "nextBackButton"  variant="contained" onClick ={() => {push('/valuelist')}}>
+            <Button color = "primary" id = "nextBackButton"  variant="contained" onClick ={() => {push('/valuelist')}}>
           Back
         </Button>
-            <Button id = "nextBackButton"  variant="contained" >
+            <Button color = "primary" id = "nextBackButton"  variant="contained" >
           Next
         </Button>
                 
