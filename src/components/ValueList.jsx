@@ -1,21 +1,74 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ValueCard from "./ValueCard";
 import ValueForm from "./ValueForm";
+import Button from '@material-ui/core/Button';
+import { useHistory } from 'react-router-dom';
+import { fetchData } from '../actions/actions';
+import { connect } from 'react-redux';
+import {axiosWithAuth} from "../utils/axiosAuth";
 
-const ValueList = () => {
 
-    const data = ["Athletic Ability", "Arts and Literature", "Creativity", "Independence", "Kindness and Generosity", "Music", "Living in the Moment", "Making a Difference", "Moral Principles", "Sense of Humor", "Nature and the Environment", "Career Success", "Membership in a Social Group", "Community", "Friends and Family"];
+    const ValueList = props => {
+
+        const { push } = useHistory();
+        const [data, setData] = useState([]);
+
+
+        useEffect(() => {
+
+            // props.fetchData();
+            // for some reason can't get this action creator to work :( 
+
+            axiosWithAuth()
+            .get("https://essentialism-bwt.herokuapp.com/api/values")
+            .then(res => {
+                setData(res.data);
+            })
+
+        }, [])
+
         
+        const [selected, setSelected] = useState([]);
+       // console.log(props.values);
+    
+        const nextPage =  e => {
+            e.preventDefault();
+            push('/dashboard');
+           
+        }
+
+        const selectItem = (id) => {
+            setSelected([...selected, id]);
+           
+            
+        }
+
+        useEffect(() => {
+            console.log(selected);
+
+            // PUT ENDPOINT NEEDED TO UPDATE VALUES WHEN SELECTED 
+            //axios call here with id's of selected values 
+
+        });
+
+
+
 
     return (
+
         <div id="valueCont">
+            
             <h1>Which values resonate with you?</h1>
-            <ValueForm values={props.values} dispatch={props.dispatch}/>
+            <ValueForm values={props.values} />
             <div  id="valueGrid">
+
+           {data.map(value => {
+                return (
+                    <ValueCard value = {value} key = {value.id} selectItem={selectItem} />
+                )
+                })}
            
-            {props.values.map(item => <ValueCard value={item} key = {item.id} dispatch = {props.dispatch} />)}
-
-
+            
         </div>
         <Button id = "nextButton" color="primary" variant="contained" onClick = {nextPage} >
       Next
@@ -24,6 +77,14 @@ const ValueList = () => {
            
         </div>
     )
+};
+
+const mapStateToProps = state => {
+    console.log(state);
+    return {
+        values: state.reducer.values[0]
+    }
 }
 
-export default ValueList;
+
+export default connect(mapStateToProps, { fetchData })(ValueList);

@@ -27,10 +27,15 @@ body{
 }
 
 .container-fluid .row{
-    padding-top: 6rem;
+    padding-top: 60rem;
 }
 
 .btn.btn-outline-success:hover{
     background-color: #69a069;
 
+}
+
+.value-card{
+    margin: 1% 0;
+    height: auto;
 }
