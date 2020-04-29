@@ -41,6 +41,10 @@ const initalFormErrors = {
 function App() {
 
 
+
+
+
+
   const [formValues, setFormValues] = useState(initalFormValues)
   const [formErrors, setFormErrors] = useState(initalFormErrors)
   const [user, setUser] = useState({})
@@ -96,11 +100,9 @@ useEffect(() => {
         console.log("user token", res)
 
         
-
-
         if(endpoint === 'register'){
           // FIGURE OUT WHAT TOKEN IS USED FOR NEW USERS (FROM RUDY)
-          localStorage.setItem('token', res.data.addedUser.password);
+         //  localStorage.setItem('token', res.data.addedUser.password);
           history.push('/valuelist')
         }
         // if the user is coming from the log in page
@@ -150,7 +152,7 @@ useEffect(() => {
        
   
         <PrivateRoute path='/dashboard'>
-          <Dashboard />
+          <Dashboard selected={selected}/>
         </PrivateRoute>
   
         <Route path='/'>

@@ -1,5 +1,7 @@
 import React,{ Component, createContext } from 'react';
 import DashboardCard from './DashboardCard';
+import { connect } from 'react-redux';
+
 
 export const DashContext = createContext();
 
@@ -28,4 +30,12 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+const mapStateToProps = state => {
+    console.log(state);
+    return {
+        values: state.reducer.values[0]
+    }
+}
+
+
+export default connect(mapStateToProps, {})(Dashboard);
