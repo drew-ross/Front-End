@@ -14,6 +14,9 @@ import { initialState, reducer } from './reducers/reducer';
 import SelectedValues from './components/SelectedValues';
 import Dashboard from './components/Dashboard';
 import SingleCard from './components/SingleCard';
+import Dashboard from './components/Dashboard'
+import PrivateRoute from '../src/utils/PrivateRoute';
+import ButtonAppBar from '../src/components/Nav';
 // import DashboardCard from './components/DashboardCard';
 
 const formSchema = yup.object().shape({
@@ -39,7 +42,7 @@ const initalFormErrors = {
 }
 
 function App() {
-  const [state, dispatch] = useReducer(reducer, initialState);
+
 
   const [formValues, setFormValues] = useState(initalFormValues)
   const [formErrors, setFormErrors] = useState(initalFormErrors)
@@ -77,14 +80,21 @@ function App() {
     console.log(user)
     axios.post(url, user)
     .then(res => {
-        console.log(res)
         console.log(endpoint)
-        setUser(res) // user.data.token for token!!
+        setUser(res) 
+        console.log("user token", res)
+
+        
+
+
         if(endpoint === 'register'){
+          // FIGURE OUT WHAT TOKEN IS USED FOR NEW USERS (FROM RUDY)
+          localStorage.setItem('token', res.data.addedUser.password);
           history.push('/valuelist')
         }
         // if the user is coming from the log in page
         else {
+          localStorage.setItem('token', res.data.token);
           history.push('/dashboard') // TEMPORARY WAITING FOR ANDREW!!!! ----- Will route to dashboard
         }
     })
@@ -94,8 +104,10 @@ function App() {
   }
 
   const onSubmitHandler = evt => {
-    const endpoint = evt.target.name
+    const endpoint = evt.currentTarget.name
     evt.preventDefault()
+
+    console.log(endpoint)
 
     const postPayload = {
       username: formValues.username,
@@ -103,6 +115,7 @@ function App() {
     }
 
     handleUser(postPayload, `${baseUrl}${endpoint}`, endpoint)
+    setFormValues(initalFormValues)
   }
 
   return (
@@ -131,7 +144,29 @@ function App() {
         />
       </Route>
     </Switch>
-  )
+    <div>
+      <ButtonAppBar />
+      <Switch>
+        <PrivateRoute path='/valuelist'>
+          <ValueList/>
+        </PrivateRoute>
+       
+  
+        <PrivateRoute path='/dashboard'>
+          <Dashboard />
+        </PrivateRoute>
+  
+        <Route path='/'>
+          <Login 
+            formValues={formValues}
+            onChangeHandler={onChangeHandler}
+            onSubmitHandler={onSubmitHandler}
+            formErrors={formErrors}
+          />
+        </Route>
+      </Switch>
+    </div>
+  );
 }
 
 export default App;

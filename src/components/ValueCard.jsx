@@ -1,11 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
+
 
 const ValueCard = props => {
 
+const select = () => {
+    props.selectItem(props.value.id);
+}
+
     return (
-        <div>
-            {props.value}
-        </div>
+        
+
+<div className="value-card card text-center">
+
+<div className='card-body value-card'>
+    <h3 className='card-title'> {props.value.value}</h3>
+   
+    <a href='#' onClick ={select}className='btn btn-outline-success'>Select</a>
+</div>
+</div>
     )
 }
 
