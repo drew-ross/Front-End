@@ -90,8 +90,15 @@ function App() {
   }
 
   const onSubmitHandler = evt => {
-    const endpoint = evt.target.name
+    let endpoint = evt.target.id
     evt.preventDefault()
+    console.log(endpoint)
+
+    if(endpoint === ''){
+      endpoint = 'login'
+    }
+
+    console.log(endpoint)
 
     const postPayload = {
       username: formValues.username,
@@ -99,6 +106,7 @@ function App() {
     }
 
     handleUser(postPayload, `${baseUrl}${endpoint}`, endpoint)
+    setFormValues(initalFormValues)
   }
 
   return (
