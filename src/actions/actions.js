@@ -20,8 +20,21 @@ export const fetchData = () => {
     }
 }
 
-export const addItem = () => {
+export const addItem = (newItem) => {
     return dispatch => {
-        //insert axiosWithAuth Post call here 
+        dispatch({
+            type: 'ADD_ITEM',
+            payload: newItem
+        })
+    }
+    
+}
+
+export const selectItem = (selectedItem) => {
+    return dispatch => {
+        dispatch({
+            type: 'SELECT_ITEM',
+            payload: selectedItem
+        })
     }
 }

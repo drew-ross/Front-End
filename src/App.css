@@ -46,14 +46,12 @@
 
 }
 
-#card {
-  padding: 2% ;
-  width: 20%;
-}
 
-#selectCard {
-  padding: 2% ;
-  width: 30%;
+
+#valueCard {
+  padding: 1% ;
+  width: 20%;
+  margin: 2%;
 }
 
 
