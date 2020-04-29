@@ -3,7 +3,7 @@ import ValueCard from "./ValueCard";
 import ValueForm from "./ValueForm";
 import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
-import { fetchData } from '../actions/actions';
+import { fetchData, selectItem } from '../actions/actions';
 import { connect } from 'react-redux';
 import {axiosWithAuth} from "../utils/axiosAuth";
 
@@ -16,19 +16,20 @@ import {axiosWithAuth} from "../utils/axiosAuth";
 
         useEffect(() => {
 
-            // props.fetchData();
+         // props.fetchData();
             // for some reason can't get this action creator to work :( 
-
+               
             axiosWithAuth()
             .get("https://essentialism-bwt.herokuapp.com/api/values")
             .then(res => {
                 setData(res.data);
             })
 
+            
+
         }, [])
 
         
-        const [selected, setSelected] = useState([]);
        // console.log(props.values);
     
         const nextPage =  e => {
@@ -37,21 +38,9 @@ import {axiosWithAuth} from "../utils/axiosAuth";
            
         }
 
-        const selectItem = (id) => {
-            setSelected([...selected, id]);
-           
-            
-        }
+       
 
-        useEffect(() => {
-            console.log(selected);
-
-            // PUT ENDPOINT NEEDED TO UPDATE VALUES WHEN SELECTED 
-            //axios call here with id's of selected values 
-
-        });
-
-
+console.log("data", data);
 
 
     return (
@@ -62,11 +51,11 @@ import {axiosWithAuth} from "../utils/axiosAuth";
             <ValueForm values={props.values} />
             <div  id="valueGrid">
 
-           {data.map(value => {
+           {data ? data.map(value => {
                 return (
-                    <ValueCard value = {value} key = {value.id} selectItem={selectItem} />
+                    <ValueCard value = {value} key = {value.id} selectItemList = {props.selectItemList}  />
                 )
-                })}
+    }) : null}
            
             
         </div>
@@ -87,4 +76,4 @@ const mapStateToProps = state => {
 }
 
 
-export default connect(mapStateToProps, { fetchData })(ValueList);
+export default connect(mapStateToProps, { fetchData, selectItem })(ValueList);

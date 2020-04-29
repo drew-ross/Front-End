@@ -1,7 +1,7 @@
 export const initialState = {
     values: [
     ],
-    isFetching: false,
+    selected: false,
 };
 
 
@@ -10,9 +10,8 @@ export const reducer = (state = initialState, action) => {
     switch(action.type) {
         case 'FETCH_START':
       return {
-        ...state,
-        isFetching: true,
-      };
+        ...state
+          };
         case 'FETCH_DATA':
             console.log("action",action.payload);
             return {
@@ -23,18 +22,13 @@ export const reducer = (state = initialState, action) => {
         case 'SELECT_VALUE':
             return {
                 ...state,
-               // UPDATE WITH POST ENDPOINT
+               
             };
         case 'ADD_VALUE':
             return {
                 ...state,
-                values: [
-                    {
-                        value: action.payload,
-                        description: null,
-                        id: Date.now()
-                    },
-                    ...state.values,
+                values: [ action.payload,
+                    ...state.values
                     
                 ],
                 

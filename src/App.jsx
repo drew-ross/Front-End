@@ -1,5 +1,5 @@
 // Libraries
-import React, {useState, useReducer} from 'react';
+import React, {useState, useEffect} from 'react';
 import * as yup from 'yup'
 import {Switch, Route, useHistory} from 'react-router-dom'
 import axios from 'axios'
@@ -46,6 +46,20 @@ function App() {
   const [user, setUser] = useState({})
 
   const history = useHistory()
+
+  const [selected, setSelected] = useState([]);
+
+  const selectItemList = (id) => {
+    setSelected([...selected, id]);
+
+   // props.selectItem(selected);
+    
+}
+
+useEffect(() => {
+    console.log(selected);
+
+});
 
   const onChangeHandler = evt => {
     const name = evt.target.name
@@ -131,7 +145,7 @@ function App() {
       
       
         <PrivateRoute path='/valuelist'>
-          <ValueList/>
+          <ValueList selectItemList = {selectItemList} />
         </PrivateRoute>
        
   
