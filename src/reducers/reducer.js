@@ -1,7 +1,7 @@
 export const initialState = {
     values: [
     ],
-    selected: false,
+    
 };
 
 
@@ -16,23 +16,10 @@ export const reducer = (state = initialState, action) => {
             console.log("action",action.payload);
             return {
                 ...state,
-                values: [action.payload]
+                values: [...state.values, action.payload]
 
             }
-        case 'SELECT_VALUE':
-            return {
-                ...state,
-               
-            };
-        case 'ADD_VALUE':
-            return {
-                ...state,
-                values: [ action.payload,
-                    ...state.values
-                    
-                ],
-                
-            };
+        
         default:
             return state;
 

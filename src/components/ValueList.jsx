@@ -16,7 +16,7 @@ import {axiosWithAuth} from "../utils/axiosAuth";
 
         useEffect(() => {
 
-         // props.fetchData();
+          props.fetchData();
             // for some reason can't get this action creator to work :( 
                
             axiosWithAuth()
