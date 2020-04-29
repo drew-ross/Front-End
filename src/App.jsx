@@ -10,8 +10,10 @@ import './App.css';
 // Components
 import Login from './components/Login'
 import ValueList from "./components/ValueList";
-import { initialState, reducer } from './reducers/reducer';
-import SelectedValues from './components/SelectedValues';
+import Dashboard from './components/Dashboard'
+import PrivateRoute from '../src/utils/PrivateRoute';
+import ButtonAppBar from '../src/components/Nav';
+// import DashboardCard from './components/DashboardCard';
 
 const formSchema = yup.object().shape({
   username: yup
@@ -36,7 +38,8 @@ const initalFormErrors = {
 }
 
 function App() {
-  const [state, dispatch] = useReducer(reducer, initialState);
+
+
   const [formValues, setFormValues] = useState(initalFormValues)
   const [formErrors, setFormErrors] = useState(initalFormErrors)
   const [user, setUser] = useState({})
@@ -73,14 +76,21 @@ function App() {
     console.log(user)
     axios.post(url, user)
     .then(res => {
-        console.log(res)
         console.log(endpoint)
-        setUser(res) // user.data.token for token!!
+        setUser(res) 
+        console.log("user token", res)
+
+        
+
+
         if(endpoint === 'register'){
+          // FIGURE OUT WHAT TOKEN IS USED FOR NEW USERS (FROM RUDY)
+          localStorage.setItem('token', res.data.addedUser.password);
           history.push('/valuelist')
         }
         // if the user is coming from the log in page
         else {
+          localStorage.setItem('token', res.data.token);
           history.push('/dashboard') // TEMPORARY WAITING FOR ANDREW!!!! ----- Will route to dashboard
         }
     })
@@ -90,13 +100,8 @@ function App() {
   }
 
   const onSubmitHandler = evt => {
-    let endpoint = evt.target.id
+    const endpoint = evt.currentTarget.name
     evt.preventDefault()
-    console.log(endpoint)
-
-    if(endpoint === ''){
-      endpoint = 'login'
-    }
 
     console.log(endpoint)
 
@@ -110,26 +115,28 @@ function App() {
   }
 
   return (
-    <Switch>
-      <Route path='/valuelist'>
-        <ValueList values = {state.values} dispatch = {dispatch} />
-      </Route>
-      <Route path='/selectedvalues'>
-        <SelectedValues values = {state.values} dispatch = {dispatch} />
-      </Route>
-      <Route path='/dashboard'>
-        <h1>TEMPORARY DASHBOARD</h1>
-        <button onClick={evt => history.push('/')}>GO HOME</button>
-      </Route>
-      <Route path='/'>
-        <Login 
-          formValues={formValues}
-          onChangeHandler={onChangeHandler}
-          onSubmitHandler={onSubmitHandler}
-          formErrors={formErrors}
-        />
-      </Route>
-    </Switch>
+    <div>
+      <ButtonAppBar />
+      <Switch>
+        <PrivateRoute path='/valuelist'>
+          <ValueList/>
+        </PrivateRoute>
+       
+  
+        <PrivateRoute path='/dashboard'>
+          <Dashboard />
+        </PrivateRoute>
+  
+        <Route path='/'>
+          <Login 
+            formValues={formValues}
+            onChangeHandler={onChangeHandler}
+            onSubmitHandler={onSubmitHandler}
+            formErrors={formErrors}
+          />
+        </Route>
+      </Switch>
+    </div>
   )
 }
 

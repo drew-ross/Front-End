@@ -17,11 +17,6 @@ const LoginForm = props => {
         history.push(`/${name}`)
     }
 
-    const tester = evt => {
-        evt.preventDefault()
-        console.log(evt.target.name)
-    }
-
     return (
         <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -67,7 +62,7 @@ const LoginForm = props => {
                 color="primary"
                 className={classes.submit}
                 onClick={onSubmitHandler} 
-                id='login'
+                name='login'
                 >
                 Login
             </Button>

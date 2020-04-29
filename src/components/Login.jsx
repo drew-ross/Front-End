@@ -64,7 +64,7 @@ const Register = props => {
                 color="primary"
                 className={classes.submit}
                 onClick={onSubmitHandler}
-                id='register'
+                name='register'
                 >
                 Sign Up
             </Button>
