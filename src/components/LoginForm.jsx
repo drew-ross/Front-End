@@ -1,10 +1,8 @@
 import React from 'react'
-import {Route, Switch, useHistory} from 'react-router-dom'
 import {Grid, Button, Container, CssBaseline, Typography, TextField, Link } from '@material-ui/core'
 import useStyles from './MaterialStyles'
-import LoginForm from './LoginForm'
 
-const Register = props => {
+const LoginForm = props => {
     const {
         formValues,
         onChangeHandler,
@@ -24,7 +22,7 @@ const Register = props => {
         <CssBaseline />
         <div className={classes.paper}>
           <Typography component="h1" variant="h5">
-            Essential App Sign Up
+            Essential App Login
           </Typography>
           <form className={classes.form} noValidate>
             <Grid container spacing={2}>
@@ -63,15 +61,15 @@ const Register = props => {
                 variant="contained"
                 color="primary"
                 className={classes.submit}
-                onClick={onSubmitHandler}
-                name='register'
+                onClick={onSubmitHandler} 
+                name='login'
                 >
-                Sign Up
+                Login
             </Button>
             <Grid container justify="flex-end">
               <Grid item>
-                <Link name='login' onClick={newRoute}>
-                  Already have an account? Sign in
+                <Link name='' onClick={newRoute}>
+                  Need an account? Sign Up
                 </Link>
               </Grid>
             </Grid>
@@ -81,35 +79,4 @@ const Register = props => {
     )
 }
 
-const Login = props => {
-    const {
-        formValues,
-        onChangeHandler,
-        onSubmitHandler,
-    } = props
-
-    const history = useHistory()
-
-    return (
-        <Switch>
-            <Route path='/login'>
-                <LoginForm
-                    formValues={formValues}
-                    onChangeHandler={onChangeHandler}
-                    onSubmitHandler={onSubmitHandler}
-                    history={history}
-                />
-            </Route>
-            <Route path='/'>
-                <Register 
-                   formValues={formValues}
-                   onChangeHandler={onChangeHandler}
-                   onSubmitHandler={onSubmitHandler}
-                   history={history}
-                />
-            </Route>
-        </Switch>
-    )
-}
-
-export default Login 
+export default LoginForm

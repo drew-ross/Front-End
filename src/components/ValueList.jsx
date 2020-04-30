@@ -1,29 +1,75 @@
-import React from "react";
+import React, { useEffect, useState, useContext } from "react";
 import ValueCard from "./ValueCard";
 import ValueForm from "./ValueForm";
+import Button from '@material-ui/core/Button';
+import { useHistory } from 'react-router-dom';
+import { fetchData, selectItem } from '../actions/actions';
+import { connect } from 'react-redux';
+import { axiosWithAuth } from "../utils/axiosAuth";
+import { ValuesContext } from "../contexts";
 
-const ValueList = () => {
 
-    const data = ["Athletic Ability", "Arts and Literature", "Creativity", "Independence", "Kindness and Generosity", "Music", "Living in the Moment", "Making a Difference", "Moral Principles", "Sense of Humor", "Nature and the Environment", "Career Success", "Membership in a Social Group", "Community", "Friends and Family"];
-        
+const ValueList = props => {
+
+    const { push } = useHistory();
+   
+
+   
+    useEffect(() => {
+   
+
+
+        props.fetchData();
+    
+
+    }, [])
+
+
+   
+
+    const nextPage = e => {
+        e.preventDefault();
+        push('/dashboard');
+
+    }
+
+
+
+    console.log("data", props.values);
+
 
     return (
+
         <div id="valueCont">
+
             <h1>Which values resonate with you?</h1>
-            <ValueForm values={props.values} dispatch={props.dispatch}/>
-            <div  id="valueGrid">
-           
-            {props.values.map(item => <ValueCard value={item} key = {item.id} dispatch = {props.dispatch} />)}
+            <ValueForm values={props.values} />
+            <div id="valueGrid">
+
+                {props.values?.map(value => {
+                    console.log(value)
+                    return (
+                        <ValueCard value={value} key={value.id} selectItemList={props.selectItemList} />
+                    )
+                }) }
 
 
-        </div>
-        <Button id = "nextButton" color="primary" variant="contained" onClick = {nextPage} >
-      Next
+            </div>
+            <Button id="nextButton" color="primary" variant="contained" onClick={nextPage} >
+                Next
     </Button>
-            
-           
+
+
         </div>
     )
+};
+
+const mapStateToProps = state => {
+    console.log(state);
+    return {
+        values: state.reducer.values[0]
+    }
 }
 
-export default ValueList;
+
+export default connect(mapStateToProps, { fetchData, selectItem })(ValueList);

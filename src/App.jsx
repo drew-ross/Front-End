@@ -1,8 +1,9 @@
 // Libraries
-import React, {useState, useReducer} from 'react';
+import React, {useState, useEffect} from 'react';
 import * as yup from 'yup'
 import {Switch, Route, useHistory} from 'react-router-dom'
 import axios from 'axios'
+import {axiosWithAuth} from "../src/utils/axiosAuth";
 
 // Styles 
 import './App.css';
@@ -10,10 +11,12 @@ import './App.css';
 // Components
 import Login from './components/Login'
 import ValueList from "./components/ValueList";
-import { initialState, reducer } from './reducers/reducer';
-import SelectedValues from './components/SelectedValues';
-import Dashboard from './components/Dashboard'
-// import DashboardCard from './components/DashboardCard';
+import Dashboard from './components/Dashboard';
+import SingleCard from './components/SingleCard';
+import PrivateRoute from '../src/utils/PrivateRoute';
+import ButtonAppBar from '../src/components/Nav';
+import {ValuesContext, DashContext} from "../src/contexts";
+
 
 const formSchema = yup.object().shape({
   username: yup
@@ -38,13 +41,28 @@ const initalFormErrors = {
 }
 
 function App() {
-  const [state, dispatch] = useReducer(reducer, initialState);
+
+
+
+
+
 
   const [formValues, setFormValues] = useState(initalFormValues)
   const [formErrors, setFormErrors] = useState(initalFormErrors)
   const [user, setUser] = useState({})
 
   const history = useHistory()
+
+  const [selected, setSelected] = useState([]);
+
+  const selectItemList = (id) => {
+    setSelected([...selected, id]);
+
+   // props.selectItem(selected);
+    
+}
+
+
 
   const onChangeHandler = evt => {
     const name = evt.target.name
@@ -76,14 +94,19 @@ function App() {
     console.log(user)
     axios.post(url, user)
     .then(res => {
-        console.log(res)
         console.log(endpoint)
-        setUser(res) // user.data.token for token!!
+        setUser(res) 
+        console.log("user token", res)
+
+        
         if(endpoint === 'register'){
+          // FIGURE OUT WHAT TOKEN IS USED FOR NEW USERS (FROM RUDY)
+         //  localStorage.setItem('token', res.data.addedUser.password);
           history.push('/valuelist')
         }
         // if the user is coming from the log in page
         else {
+          localStorage.setItem('token', res.data.token);
           history.push('/dashboard') // TEMPORARY WAITING FOR ANDREW!!!! ----- Will route to dashboard
         }
     })
@@ -93,8 +116,10 @@ function App() {
   }
 
   const onSubmitHandler = evt => {
-    const endpoint = evt.target.name
+    const endpoint = evt.currentTarget.name
     evt.preventDefault()
+
+    console.log(endpoint)
 
     const postPayload = {
       username: formValues.username,
@@ -102,31 +127,97 @@ function App() {
     }
 
     handleUser(postPayload, `${baseUrl}${endpoint}`, endpoint)
+    setFormValues(initalFormValues)
   }
 
+  const [initialState, setInitialState] = useState({
+    values: [
+    ],
+    
+})
+
+
+const fetchingData = () => {
+  
+  //   axiosWithAuth()
+  //   .get("https://essentialism-bwt.herokuapp.com/api/values")
+  //   .then(res => {
+  //       console.log("res",res);
+  // setInitialState(
+  //  { ...initialState,
+  //     values: [
+  //     res.data
+  //   ]
+  // }
+  // )
+  
+ 
+      
+      
+  // })
+  // .catch(err => {
+  //     console.log("err", err);
+  // })
+  
+
+}
+
+
+
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    axiosWithAuth()
+    .get("https://essentialism-bwt.herokuapp.com/api/projects")
+    .then(res => {
+        setProjects(res.data);
+    })
+  })
+
+
+
   return (
+    <>
+    <ValuesContext.Provider value = {{selected, fetchingData, initialState}}>
+    <ButtonAppBar />
     <Switch>
-      <Route path='/valuelist'>
-        <ValueList values = {state.values} dispatch = {dispatch} />
-      </Route>
-      <Route path='/selectedvalues'>
-        <SelectedValues values = {state.values} dispatch = {dispatch} />
-      </Route>
 
       <Route path='/dashboard'>
         <Dashboard />
       </Route>
 
-      <Route path='/'>
-        <Login 
-          formValues={formValues}
-          onChangeHandler={onChangeHandler}
-          onSubmitHandler={onSubmitHandler}
-          formErrors={formErrors}
-        />
+     
+
+      
+      
+        <PrivateRoute path='/valuelist'>
+          <ValueList selectItemList = {selectItemList}  />
+        </PrivateRoute>
+       
+        <DashContext.Provider value={{projects}}>
+
+        <PrivateRoute path='/dashboard'>
+          <Dashboard />
+        </PrivateRoute>
+
+        <Route path='/singlecard'>
+        <SingleCard />
       </Route>
-    </Switch>
-  )
+
+        </DashContext.Provider>
+  
+        <Route path='/'>
+          <Login 
+            formValues={formValues}
+            onChangeHandler={onChangeHandler}
+            onSubmitHandler={onSubmitHandler}
+            formErrors={formErrors}
+          />
+        </Route>
+      </Switch>
+      </ValuesContext.Provider>
+     </>
+  );
 }
 
 export default App;
