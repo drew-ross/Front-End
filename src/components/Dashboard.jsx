@@ -31,13 +31,4 @@ const Dashboard = props => {
 }
 
 
-
-const mapStateToProps = state => {
-    console.log(state);
-    return {
-        values: state.reducer.values[0]
-    }
-}
-
-
-export default connect(mapStateToProps, {})(Dashboard);
+export default Dashboard;
